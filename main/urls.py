@@ -4,8 +4,6 @@ from django.urls import path
 from main import views
 
 urlpatterns = [
-    path(
-        "painel/",
-        views.painel,
-    ),
+    path("painel/", views.painel),
+    path("clients/", views.clients),
 ]

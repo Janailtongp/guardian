@@ -88,6 +88,7 @@ class Client(models.Model):
     legal_name = models.fields.CharField(max_length=255)
     cnpj = models.fields.CharField(max_length=255, unique=True)
     cpf = models.fields.CharField(max_length=255, unique=True, blank=True, null=True)
+    collaborators = models.ManyToManyField(User)
 
     def clean(self) -> None:
         if not (self.cnpj or self.cpf):
