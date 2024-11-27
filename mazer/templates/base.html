@@ -67,56 +67,56 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <li class="sidebar-title">Menu </li>
+                        {% if user.is_authenticated %}
+                            <li class="sidebar-item {% if active_menu == 'painel'%} active {% endif %}">
+                                <a href="/" class='sidebar-link'>
+                                    <i class="bi bi-house-door-fill"></i>
+                                    <span>Inicio</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item {% if active_menu == 'painel'%} active {% endif %}">
-                            <a href="/painel/" class='sidebar-link'>
-                                <i class="bi bi-house-door-fill"></i>
-                                <span>Inicio</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item ">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-file-earmark-medical-fill"></i>
+                                    <span>Solicitações</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-medical-fill"></i>
-                                <span>Solicitações</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item ">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-bookmark-fill"></i>
+                                    <span>Tipos de Solicitação</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-bookmark-fill"></i>
-                                <span>Tipos de Solicitação</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item {% if active_menu == 'clients'%} active {% endif %}">
+                                <a href="/clients/" class='sidebar-link'>
+                                    <i class="bi bi-building"></i>
+                                    <span>Empresas</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item {% if active_menu == 'clients'%} active {% endif %}">
-                            <a href="/clients/" class='sidebar-link'>
-                                <i class="bi bi-building"></i>
-                                <span>Empresas</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item ">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-people-fill"></i>
+                                    <span>Usuários</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-people-fill"></i>
-                                <span>Usuários</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item ">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span>Auditoria</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-exclamation-circle"></i>
-                                <span>Auditoria</span>
-                            </a>
-                        </li>
-
-                        <li class="sidebar-item ">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-person-square"></i>
-                                <span>Perfil</span>
-                            </a>
-                        </li>
-
+                            <li class="sidebar-item ">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-person-square"></i>
+                                    <span>Perfil</span>
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -148,11 +148,11 @@
                                     <img src="{% static 'images/faces/1.jpg' %}" alt="Face 1">
                                 </div>
                                 <div class="ms-3 name flex-grow-1">
-                                    <h5 class="font-bold">John Duck</h5>
-                                    <h6 class="text-muted mb-0">@johnducky</h6>
+                                    <h5 class="font-bold">{{ user.name }}</h5>
+                                    <h6 class="text-muted mb-0">@{{ user.username }}</h6>
                                 </div>
                                 <div>
-                                    <a href="#" class="btn btn-primary"><i class="bi bi-power"></i></a>
+                                    <a href="/logout" class="btn btn-primary"><i class="bi bi-power"></i></a>
                                 </div>
                             </div>
                         </div>

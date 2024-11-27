@@ -1,3 +1,63 @@
 {% extends 'base.html' %}
 
-{% block content %} {{clients}} {% endblock %}
+{% block content %}
+
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+            <table class="table table-striped" id="table1">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CNPJ</th>
+                        <th>CPF</th>
+                        <th>Membros</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for client in clients_list %}
+                    <tr>
+                        <td>{{client.legal_name | default:''}}</td>
+                        <td>{{client.cnpj | default:''}}</td>
+                        <td>{{client.cpf | default:''}}</td>
+                        <td>
+                            {% for collaborator in client.collaborators.all %}
+                                {{collaborator.name }} (@{{collaborator.username }}), 
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a href="/clients/{{client.pk}}/edit" class="btn btn-info"><i class="bi bi-power"></i> Editar</a>
+                            <a href="/clients/{{client.pk}}/delete" class="btn btn-danger"><i class="bi bi-power"></i> Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if clients_list.has_previous %}
+                        <a href="?page={{ clients_list.previous_page_number }}" >
+                            <i class="bi bi-arrow-left-circle"></i>
+                        </a>
+                    {% endif %}
+                    <span class="current">
+                        {{ clients_list.number }} de {{ clients_list.paginator.num_pages }}
+                    </span>
+                    {% if clients_list.has_next %}
+                        <a href="?page={{ clients_list.next_page_number }}" >
+                            <i class="bi bi-arrow-right-circle"></i>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+{% endblock %}
