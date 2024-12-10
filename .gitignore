@@ -8,3 +8,6 @@ setup/__pycache__/
 .env
 .venv
 *.pdf
+
+main/__pycache__/*.pyc
+setup/__pycache__/*.pyc
