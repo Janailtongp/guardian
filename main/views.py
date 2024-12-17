@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
@@ -55,12 +56,37 @@ def create_client(request):
     return render(request, "clients-new.html", locals())
 
 
-# @login_required
-# def edit_client(request, id):
-#     client = get_object_or_404(Client, pk=id)
-#     form = ClientForm(instance=client)
+@login_required
+def edit_client(request, id):
+    active_menu: str = "clients"
+    title: str = "Edição de empresa"
+    subtitle: str = "Formulário de edição de empresa"
 
-#     if request.method == 'POST':
-#         return False
-#     else:
-#         return render(request, "clients.html", locals())
+    client = get_object_or_404(Client, pk=id)
+    form = ClientForm(instance=client)
+
+    if request.method == 'POST':
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            client = form.save(commit=False)
+            client.save()
+            collaborators = form.cleaned_data['collaborators']
+            client.collaborators.clear()
+            client.collaborators.add(*collaborators)
+            return redirect("/clients/")
+        else:
+            return render(request, "clients-edit.html", locals())
+    else:
+        return render(request, "clients-edit.html", locals())
+
+
+@login_required
+def delete_client(request, id):
+    active_menu: str = "clients"
+    title: str = ""
+    subtitle: str = ""
+
+    client = get_object_or_404(Client, pk=id)
+    client.delete()
+    messages.info(request, "Cliente deletado com sucesso!")
+    return redirect("/clients/")

@@ -7,5 +7,6 @@ urlpatterns = [
     path("", views.painel),
     path("clients/", views.clients),
     path("clients/new/", views.create_client),
-    # path("clients/<int:id>/edit", views.edit_client),
+    path("clients/<int:id>/edit", views.edit_client),
+    path("clients/<int:id>/delete", views.delete_client),
 ]

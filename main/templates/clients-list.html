@@ -8,6 +8,14 @@
             <a href="/clients/new/" class="btn btn-success float-right"><i class="bi bi-plus"></i> Adicionar Cliente</a>
         </div>
         <div class="card-body">
+            {% if messages %}
+            <ul class="list-unstyled p-0">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %}> {{message}} </li>
+                
+                {% endfor %}
+            </ul>
+            {% endif %}
             <table class="table table-striped" id="table1">
                 <thead>
                     <tr>
