@@ -8,7 +8,9 @@ class ClientForm(autocomplete.FutureModelForm):
     collaborators = forms.ModelMultipleChoiceField(
         label='Colaboradores', 
         queryset=User.objects.all(), 
-        widget=autocomplete.ModelSelect2Multiple(url='user-autocomplete')
+        widget=autocomplete.ModelSelect2Multiple(url='user-autocomplete'),
+        required=False,
+        help_text="Colaboradores possuem acesso a processos da empresa",
     )
     class Meta:
         model = Client

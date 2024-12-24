@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from main.models import Client, User
 from .forms import ClientForm
@@ -10,10 +11,16 @@ from dal import autocomplete
 
 
 class UserAutocomplete(autocomplete.Select2QuerySetView):
+    def get_result_label(self, item):
+        return f"{item.name} (@{item.username})"
+
+    def get_selected_result_label(self, item):
+        return f"{item.name} (@{item.username})"
+
     def get_queryset(self):
         qs = User.objects.filter(is_staff=False, is_active=True)
         if self.q:
-            qs = qs.filter(name=self.q)
+            qs = qs.filter(Q(name__icontains=self.q) | Q(username__icontains=self.q))
         return qs
 
 @login_required

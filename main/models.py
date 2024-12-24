@@ -85,19 +85,42 @@ class PerfilManager(models.Manager):
 
 
 class Client(models.Model):
-    legal_name = models.fields.CharField(max_length=255)
-    cnpj = models.fields.CharField(max_length=255, unique=True)
-    cpf = models.fields.CharField(max_length=255, unique=True, blank=True, null=True)
-    collaborators = models.ManyToManyField(User)
+    legal_name = models.fields.CharField(
+        verbose_name="Nome legal",
+        max_length=255
+    )
+    cnpj = models.fields.CharField(
+        verbose_name="CNPJ",
+        max_length=255,
+        unique=True,
+        blank=True,
+        null=True
+    )
+    cpf = models.fields.CharField(
+        verbose_name="CPF",
+        max_length=255,
+        unique=True,
+        blank=True,
+        null=True
+    )
+    collaborators = models.ManyToManyField(
+        User,
+        verbose_name="Colaboradores",
+        help_text="Colaboradores possuem acesso a processos da empresa",
+        blank=True
+    )
+    class Meta:
+        verbose_name = "Empresa"
+        verbose_name_plural = "Empresas"
+
+    def __str__(self) -> str:
+        return f"{self.legal_name} ({self.get_registration()})"
 
     def clean(self) -> None:
         if not (self.cnpj or self.cpf):
             raise ValidationError(
-                "At least one of the CNPJ or CPF fields is required"
+                "Pelo menos um dos campos CNPJ ou CPF é obrigatório"
             )
-
-    def __str__(self) -> str:
-        return f"{self.legal_name} ({self.get_registration()})"
 
     def get_registration(self) -> str:
         return self.cnpj or self.cpf
