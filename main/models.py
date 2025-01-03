@@ -212,9 +212,22 @@ class Attachment(models.Model):
 
 
 class RoutineType(models.Model):
-    name = models.fields.CharField(max_length=255, blank=False, null=False)
-    code = models.fields.IntegerField(blank=False, null=False)
-    description = models.fields.TextField(max_length=255, blank=True)
+    name = models.fields.CharField(
+        verbose_name="Nome",
+        max_length=255,
+        blank=False,
+        null=False
+    )
+    code = models.fields.IntegerField(
+        verbose_name="Código",
+        blank=False,
+        null=False
+    )
+    description = models.fields.TextField(
+        verbose_name="Descrição",
+        max_length=255,
+        blank=True
+    )
 
 class Routine(models.Model):
     name = models.fields.CharField(max_length=255, blank=False, null=False)

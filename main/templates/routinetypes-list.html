@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="section">
+    <div class="card">
+        <div class="card-header">
+            <a href="/routinetypes/new/" class="btn btn-success float-right"><i class="bi bi-plus"></i> Adicionar Cliente</a>
+        </div>
+        <div class="card-body">
+            {% if messages %}
+            <ul class="list-unstyled p-0">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="alert alert-{{message.tags}}" {% endif %}> {{message}} </li>
+                
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <table class="table table-striped" id="table1">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for routinetype in routinetypes_list %}
+                    <tr>
+                        <td>{{routinetype.code | default:''}}</td>
+                        <td>{{routinetype.name | default:''}}</td>
+                        <td>{{routinetype.description | default:''}}</td>
+                        <td>
+                            <a href="/routinetypes/{{routinetype.pk}}/edit" class="btn btn-info"><i class="bi bi-pencil"></i> Editar &#8203;</a>
+                            <a href="/routinetypes/{{routinetype.pk}}/delete" class="btn btn-danger"><i class="bi bi-trash"></i> Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if clients_list.has_previous %}
+                        <a href="?page={{ routinetypes_list.previous_page_number }}" >
+                            <i class="bi bi-arrow-left-circle"></i>
+                        </a>
+                    {% endif %}
+                    <span class="current">
+                        {{ routinetypes_list.number }} de {{ routinetypes_list.paginator.num_pages }}
+                    </span>
+                    {% if clients_list.has_next %}
+                        <a href="?page={{ routinetypes_list.next_page_number }}" >
+                            <i class="bi bi-arrow-right-circle"></i>
+                        </a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+{% endblock %}

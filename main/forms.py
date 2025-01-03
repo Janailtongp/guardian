@@ -1,5 +1,5 @@
 from django import forms
-from .models import Client, User
+from .models import Client, User, RoutineType
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from dal import autocomplete
 
@@ -18,5 +18,16 @@ class ClientForm(autocomplete.FutureModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ClientForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class RoutineTypeForm(autocomplete.FutureModelForm):
+    class Meta:
+        model = RoutineType
+        fields = ("code", "name", "description")
+
+    def __init__(self, *args, **kwargs):
+        super(RoutineTypeForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

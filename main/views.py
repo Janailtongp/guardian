@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from main.models import Client, User
-from .forms import ClientForm
+from main.models import Client, User, RoutineType, Routine
+from .forms import ClientForm, RoutineTypeForm
 from dal import autocomplete
 # Create your views here.
 
@@ -34,7 +34,7 @@ def painel(request):
 @login_required
 def clients(request):
     active_menu: str = "clients"
-    title: str = "Listagem de empresa" 
+    title: str = "Empresas" 
     subtitle: str = "Gerencie empresas que poderão ser vinculadas a solicitações"
     clients = Client.objects.all().order_by("legal_name")
     paginator = Paginator(clients, 10)
@@ -97,3 +97,68 @@ def delete_client(request, id):
     client.delete()
     messages.info(request, "Cliente deletado com sucesso!")
     return redirect("/clients/")
+
+
+
+@login_required
+def routinetypes(request):
+    active_menu: str = "routinetypes"
+    title: str = "Tipos de Solicitações" 
+    subtitle: str = "Gerencie os Tipos Solicitações"
+    routinetypes = RoutineType.objects.all().order_by("code")
+    paginator = Paginator(routinetypes, 10)
+    page = request.GET.get("page")
+    routinetypes_list = paginator.get_page(page)
+
+    return render(request, "routinetypes-list.html", locals())
+
+@login_required
+def create_routinetype(request):
+    active_menu: str = "routinetypes"
+    title: str = "Tipos de Solicitações"
+    subtitle: str = "Formulário de cadastro de Tipo de Solicitação" 
+    if request.method == "POST":
+        form = RoutineTypeForm(request.POST)
+
+        if form.is_valid():
+            routinetype = form.save(commit=False)
+            routinetype.save()
+    
+            return redirect("/routinetypes/")
+    else:
+        form = RoutineTypeForm()
+    return render(request, "routinetypes-new.html", locals())
+
+
+@login_required
+def edit_routinetype(request, id):
+    active_menu: str = "routinetypes"
+    title: str = "Tipos de Solicitações"
+    subtitle: str = "Formulário de edição de Tipo de Solicitação"
+
+    client = get_object_or_404(RoutineType, pk=id)
+    form = RoutineTypeForm(instance=client)
+
+    if request.method == 'POST':
+        form = RoutineTypeForm(request.POST, instance=client)
+        if form.is_valid():
+            client = form.save(commit=False)
+            client.save()
+
+            return redirect("/routinetypes/")
+        else:
+            return render(request, "routinetypes-edit.html", locals())
+    else:
+        return render(request, "routinetypes-edit.html", locals())
+
+
+@login_required
+def delete_routinetype(request, id):
+    active_menu: str = "routinetypes"
+    title: str = ""
+    subtitle: str = ""
+
+    routinetype = get_object_or_404(RoutineType, pk=id)
+    routinetype.delete()
+    messages.info(request, "Tipo de serviço deletado com sucesso!")
+    return redirect("/routinetypes/")
